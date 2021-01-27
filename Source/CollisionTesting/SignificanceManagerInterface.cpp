@@ -34,7 +34,7 @@ void ISignificanceManagerInterface::AddSignificanceThreshold(float significance,
 	SignificanceSettings.SignificanceThresholds.Emplace(significance, maxDistance);
 }
 
-void ISignificanceManagerInterface::RegeisterWithSignificancemanager(UObject* ObjectToRegister, const UWorld* World)
+void ISignificanceManagerInterface::RegeisterWithSignificancemanager(UObject* ObjectToRegister, const UWorld* World, FName Tag)
 {
 
 	//if (!IsNetMode(NM_DedicatedServer))
@@ -52,7 +52,7 @@ void ISignificanceManagerInterface::RegeisterWithSignificancemanager(UObject* Ob
 				return PostSignificanceFunction(ObjectInfo, OldSignificance, Significance, bFinal);
 			};
 
-			SignificanceManager->RegisterObject(ObjectToRegister, TEXT("Character"), Significance, USignificanceManager::EPostSignificanceType::Sequential, PostSignificance);
+			SignificanceManager->RegisterObject(ObjectToRegister, Tag, Significance, USignificanceManager::EPostSignificanceType::Sequential, PostSignificance);
 
 
 		}

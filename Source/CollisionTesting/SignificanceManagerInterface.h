@@ -45,6 +45,6 @@ public:
 	virtual float GetSignificanceByDistance(float distance);
 	virtual void AddSignificanceThreshold(float significance, float maxDistance);
 
-	virtual void RegeisterWithSignificancemanager(UObject* ObjectToRegister, const UWorld* World);
+	virtual void RegeisterWithSignificancemanager(UObject* ObjectToRegister, const UWorld* World, FName Tag );
 
 };

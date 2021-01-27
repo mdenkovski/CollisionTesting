@@ -36,8 +36,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-		UParticleSystemComponent* ParticleSystem;
+	/*UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		UParticleSystemComponent* ParticleSystem;*/
 
 	UPROPERTY(EditAnywhere)
 		UMaterialInstance* Significance0Material;
@@ -45,6 +45,9 @@ public:
 		UMaterialInstance* Significance1Material;
 	UPROPERTY(EditAnywhere)
 		UMaterialInstance* Significance2Material;
+
+	UPROPERTY(EditAnywhere)
+		UMaterialInstanceDynamic* DynamicMaterial;
 
 protected:
 
@@ -111,7 +114,7 @@ public:
 	//float GetSignificanceByDistance(float distance);
 	
 	
-	UParticleSystemComponent* GetParticleSystem();
+	//UParticleSystemComponent* GetParticleSystem();
 
 	// Inherited via ISignificanceManagerInterface
 	virtual void PostSignificanceFunction(USignificanceManager::FManagedObjectInfo* ObjectInfo, float OldSignificance, float Significance, bool bFinal) override;

@@ -47,11 +47,13 @@ ACollisionTestingCharacter::ACollisionTestingCharacter()
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 
-	ParticleSystem = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleSystem"));
+	//ParticleSystem = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleSystem"));
 
 	AddSignificanceThreshold(2.0, 1000.0f);
 	AddSignificanceThreshold(1.0f, 2500.0f);
 	AddSignificanceThreshold(0.0f, 5000.0f);
+
+	
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -176,24 +178,28 @@ void ACollisionTestingCharacter::BeginPlay()
 	//	}
 	//}
 
+	DynamicMaterial = GetMesh()->CreateDynamicMaterialInstance(0, Significance2Material);
+
+	//GetMesh()->SetMaterial(0, DynamicMaterial);
+
 	if (!IsNetMode(NM_DedicatedServer))
 	{
-		RegeisterWithSignificancemanager(this, GetWorld());
+		RegeisterWithSignificancemanager(this, GetWorld(), TEXT("Character"));
 	}
 
 
-	ParticleSystem->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, "head");
+	/*ParticleSystem->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, "head");
 	ParticleSystem->SetWorldRotation(FQuat::MakeFromEuler(FVector::UpVector));
 
-	ParticleSystem->ActivateSystem();
+	ParticleSystem->ActivateSystem();*/
 	//ParticleSystem->DeactivateSystem();
 
 }
 
-UParticleSystemComponent* ACollisionTestingCharacter::GetParticleSystem() 
-{
-	return ParticleSystem;
-}
+//UParticleSystemComponent* ACollisionTestingCharacter::GetParticleSystem() 
+//{
+//	return ParticleSystem;
+//}
 
 void ACollisionTestingCharacter::PostSignificanceFunction(USignificanceManager::FManagedObjectInfo* ObjectInfo, float OldSignificance, float Significance, bool bFinal)
 {
@@ -207,23 +213,27 @@ void ACollisionTestingCharacter::PostSignificanceFunction(USignificanceManager::
 		{
 
 			Character->GetCharacterMovement()->SetComponentTickInterval(0.25f);
-			Character->GetMesh()->SetMaterial(0,Significance0Material);
+			//Character->GetMesh()->SetMaterial(0,Significance0Material);
+			DynamicMaterial->SetVectorParameterValue("Color", FLinearColor::Red);
 			//Character->GetParticleSystem()->DeactivateSystem();
 
 		}
 		else if (Significance == 1.0f)
 		{
 			Character->GetCharacterMovement()->SetComponentTickInterval(0.1f);
-			Character->GetMesh()->SetMaterial(0,Significance1Material);
+			//Character->GetMesh()->SetMaterial(0,Significance1Material);
 			//Character->GetParticleSystem()->DeactivateSystem();
-			if (Character->GetParticleSystem()->IsActive()) Character->GetParticleSystem()->DeactivateSystem();
+			//if (Character->GetParticleSystem()->IsActive()) Character->GetParticleSystem()->DeactivateSystem();
+			DynamicMaterial->SetVectorParameterValue("Color", FLinearColor::Yellow);
 		}
 		else if (Significance == 2.0f)
 		{
 			Character->GetCharacterMovement()->SetComponentTickInterval(0.0f);
-			Character->GetMesh()->SetMaterial(0,Significance2Material);
+			//Character->GetMesh()->SetMaterial(0,Significance2Material);
 			//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::Printf(TEXT("HighestSignificance")) + Character->GetName() );
-			if(!Character->GetParticleSystem()->IsActive()) Character->GetParticleSystem()->ActivateSystem();
+			//if(!Character->GetParticleSystem()->IsActive()) Character->GetParticleSystem()->ActivateSystem();
+			DynamicMaterial->SetVectorParameterValue("Color", FLinearColor::Green);
+
 
 			
 		}
