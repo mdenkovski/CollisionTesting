@@ -31,6 +31,6 @@ public:
 	//UPROPERTY(EditAnywhere)
 		TArray<UMaterialInstanceDynamic*> DynamicMaterials;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = Dynamic_Materials)
 		TArray<int> MaterialIndicesToChange;
 };

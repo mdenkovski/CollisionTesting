@@ -23,29 +23,29 @@ void ASignificanceMeshActor::PostSignificanceFunction(USignificanceManager::FMan
 		if (Significance == 0.0f) //lowest significance
 		{
 			//change the qulaity of each dynamic material we need to update to 0
-			for (int i = 0; i < MaterialIndicesToChange.Num(); i++)
+			for (int i = 0; i < Mesh->MaterialIndicesToChange.Num(); i++)
 			{
-				DynamicMaterials[i]->SetScalarParameterValue("Quality", 0);
-				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Significance 0"));
+				Mesh->DynamicMaterials[i]->SetScalarParameterValue("Quality", 0);
+				//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Significance 0"));
 			}
 
 		}
 		else if (Significance == 1.0f)
 		{
 			//change the qulaity of each dynamic material we need to update to 1
-			for (int i = 0; i < MaterialIndicesToChange.Num(); i++)
+			for (int i = 0; i < Mesh->MaterialIndicesToChange.Num(); i++)
 			{
-				DynamicMaterials[i]->SetScalarParameterValue("Quality", 1);
-				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Significance 1"));
+				Mesh->DynamicMaterials[i]->SetScalarParameterValue("Quality", 1);
+				//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Significance 1"));
 			}
 		}
 		else if (Significance == 2.0f)
 		{
 			//change the qulaity of each dynamic material we need to update to 2
-			for (int i = 0; i < MaterialIndicesToChange.Num(); i++)
+			for (int i = 0; i < Mesh->MaterialIndicesToChange.Num(); i++)
 			{
-				DynamicMaterials[i]->SetScalarParameterValue("Quality", 2);
-				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Significance 2"));
+				Mesh->DynamicMaterials[i]->SetScalarParameterValue("Quality", 2);
+				//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Significance 2"));
 			}
 		}
 	}
