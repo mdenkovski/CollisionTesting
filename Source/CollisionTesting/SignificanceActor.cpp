@@ -11,9 +11,9 @@ ASignificanceActor::ASignificanceActor()
 	PrimaryActorTick.bCanEverTick = true;
 
 
-	AddSignificanceThreshold(2.0, 500.0f);
+	AddSignificanceThreshold(0.0f, 500.0f);
 	AddSignificanceThreshold(1.0f, 800.0f);
-	AddSignificanceThreshold(0.0f, 1200.0f);
+	AddSignificanceThreshold(2.0f, 1200.0f);
 
 	Tags.Add("SignificanceActor");
 }
@@ -72,6 +72,7 @@ void ASignificanceActor::PostSignificanceFunction(USignificanceManager::FManaged
 				SignificanceActor->DynamicMaterials[i]->SetScalarParameterValue("Quality", 1);
 				//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Significance 1"));
 			}
+			//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Medium Quality"));
 		}
 		else if (Significance == 2.0f)
 		{

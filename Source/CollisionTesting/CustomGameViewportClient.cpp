@@ -22,7 +22,37 @@ void UCustomGameViewportClient::Tick(float DeltaTime)
     if (UWorld* MyWorld = GetWorld())
     {
 
-        const bool bHasValidData = CachedPlayerController.IsValid();
+        
+
+        if (USignificanceManager* SignificanceManager = FSignificanceManagerModule::Get(MyWorld))
+        {
+            // Update once per frame, using only Player 0's world transform.
+            if (APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(MyWorld, 0))
+            {
+                // The Significance Manager uses an ArrayView. Construct a one-element Array to hold the Transform.
+                TArray<FTransform> TransformArray;
+                TransformArray.Add(PlayerPawn->GetTransform());
+                // Update the Significance Manager with our one-element Array passed in through an ArrayView.
+                SignificanceManager->Update(TArrayView<FTransform>(TransformArray));
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+//possible alternative to have
+/*const bool bHasValidData = CachedPlayerController.IsValid();
         if (!bHasValidData)
         {
             APlayerController* PC = UGameplayStatics::GetPlayerController(MyWorld, 0);
@@ -43,19 +73,4 @@ void UCustomGameViewportClient::Tick(float DeltaTime)
 
                 SignificanceManager->Update(ViewPoint);
             }
-        }
-
-        //if (USignificanceManager* SignificanceManager = FSignificanceManagerModule::Get(MyWorld))
-        //{
-        //    // Update once per frame, using only Player 0's world transform.
-        //    if (APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(MyWorld, 0))
-        //    {
-        //        // The Significance Manager uses an ArrayView. Construct a one-element Array to hold the Transform.
-        //        TArray<FTransform> TransformArray;
-        //        TransformArray.Add(PlayerPawn->GetTransform());
-        //        // Update the Significance Manager with our one-element Array passed in through an ArrayView.
-        //        SignificanceManager->Update(TArrayView<FTransform>(TransformArray));
-        //    }
-        //}
-    }
-}
+        }*/

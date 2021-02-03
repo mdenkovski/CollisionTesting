@@ -19,7 +19,23 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 
-protected:
-	//cached pointer to our player controller
-	TWeakObjectPtr<class APlayerController> CachedPlayerController;
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// posible alternative to have
+//protected:
+//	//cached pointer to our player controller
+//	TWeakObjectPtr<class APlayerController> CachedPlayerController;

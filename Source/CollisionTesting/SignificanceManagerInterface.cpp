@@ -37,24 +37,19 @@ void ISignificanceManagerInterface::AddSignificanceThreshold(float significance,
 void ISignificanceManagerInterface::RegeisterWithSignificancemanager(UObject* ObjectToRegister, const UWorld* World, FName Tag)
 {
 
-	//if (!IsNetMode(NM_DedicatedServer))
-	//{
-		USignificanceManager* SignificanceManager = USignificanceManager::Get(World);
-		if (SignificanceManager)
+	USignificanceManager* SignificanceManager = USignificanceManager::Get(World);
+	if (SignificanceManager)
+	{
+		auto Significance = [&](USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& ViewPoint) -> float
 		{
-			auto Significance = [&](USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& ViewPoint) -> float
-			{
-				return SignificanceFunction(ObjectInfo, ViewPoint);
-			};
+			return SignificanceFunction(ObjectInfo, ViewPoint);
+		};
 
-			auto PostSignificance = [&](USignificanceManager::FManagedObjectInfo* ObjectInfo, float OldSignificance, float Significance, bool bFinal)
-			{
-				return PostSignificanceFunction(ObjectInfo, OldSignificance, Significance, bFinal);
-			};
+		auto PostSignificance = [&](USignificanceManager::FManagedObjectInfo* ObjectInfo, float OldSignificance, float Significance, bool bFinal)
+		{
+			return PostSignificanceFunction(ObjectInfo, OldSignificance, Significance, bFinal);
+		};
 
-			SignificanceManager->RegisterObject(ObjectToRegister, Tag, Significance, USignificanceManager::EPostSignificanceType::Sequential, PostSignificance);
-
-
-		}
-	//}
+		SignificanceManager->RegisterObject(ObjectToRegister, Tag, Significance, USignificanceManager::EPostSignificanceType::Sequential, PostSignificance);
+	}
 }

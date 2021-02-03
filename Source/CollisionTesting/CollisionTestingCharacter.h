@@ -93,29 +93,6 @@ public:
 	virtual void BeginPlay() override;
 
 
-	////Significance manager
-	//float SignificanceFunction(USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& ViewPoint);
-	//void PostSignificanceFunction(USignificanceManager::FManagedObjectInfo* ObjectInfo, float OldSignificance, float Significance, bool bFinal);
-
-	//struct FSignificanceSettings
-	//{
-	//	struct FSignificanceThresholds
-	//	{
-	//		FSignificanceThresholds(float InSignificance, float InMaxDistance) : Significance(InSignificance), MaxDistance(InMaxDistance) {}
-	//		float Significance;
-	//		float MaxDistance;
-	//	};
-
-	//	TArray<FSignificanceThresholds, TInlineAllocator<3>> SignificanceThresholds;
-	//};
-
-	//FSignificanceSettings SignificanceSettings;
-
-	//float GetSignificanceByDistance(float distance);
-	
-	
-	//UParticleSystemComponent* GetParticleSystem();
-
 	// Inherited via ISignificanceManagerInterface
 	virtual void PostSignificanceFunction(USignificanceManager::FManagedObjectInfo* ObjectInfo, float OldSignificance, float Significance, bool bFinal) override;
 

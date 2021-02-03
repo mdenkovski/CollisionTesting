@@ -47,7 +47,7 @@ ACollisionTestingCharacter::ACollisionTestingCharacter()
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 
-	//ParticleSystem = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleSystem"));
+	Tags.Add("Character");
 
 	AddSignificanceThreshold(2.0, 1000.0f);
 	AddSignificanceThreshold(1.0f, 2500.0f);
@@ -155,51 +155,15 @@ void ACollisionTestingCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//if (!IsNetMode(NM_DedicatedServer))
-	//{
-	//	USignificanceManager* SignificanceManager = USignificanceManager::Get(GetWorld());
-	//	if (SignificanceManager)
-	//	{
-	//		auto Significance = [&](USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& ViewPoint) -> float
-	//		{
-	//			return SignificanceFunction(ObjectInfo, ViewPoint);
-	//		};
-
-	//		auto PostSignificance = [&](USignificanceManager::FManagedObjectInfo* ObjectInfo, float OldSignificance, float Significance, bool bFinal)
-	//		{
-	//			return PostSignificanceFunction(ObjectInfo, OldSignificance, Significance, bFinal);
-	//		};
-
-	//		SignificanceManager->RegisterObject(this, TEXT("Character"), Significance, USignificanceManager::EPostSignificanceType::Sequential, PostSignificance);
-
-
-
-	//		/*SignificanceManager->RegisterObject(this, TEXT("Character"), &SignificanceFunction, USignificanceManager::EPostSignificanceType::Sequential, &PostSignificanceFunction);*/
-	//	}
-	//}
-
 	DynamicMaterial = GetMesh()->CreateDynamicMaterialInstance(0, Significance2Material);
-
-	//GetMesh()->SetMaterial(0, DynamicMaterial);
 
 	if (!IsNetMode(NM_DedicatedServer))
 	{
 		RegeisterWithSignificancemanager(this, GetWorld(), TEXT("Character"));
 	}
 
-
-	/*ParticleSystem->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, "head");
-	ParticleSystem->SetWorldRotation(FQuat::MakeFromEuler(FVector::UpVector));
-
-	ParticleSystem->ActivateSystem();*/
-	//ParticleSystem->DeactivateSystem();
-
 }
 
-//UParticleSystemComponent* ACollisionTestingCharacter::GetParticleSystem() 
-//{
-//	return ParticleSystem;
-//}
 
 void ACollisionTestingCharacter::PostSignificanceFunction(USignificanceManager::FManagedObjectInfo* ObjectInfo, float OldSignificance, float Significance, bool bFinal)
 {
@@ -211,56 +175,26 @@ void ACollisionTestingCharacter::PostSignificanceFunction(USignificanceManager::
 
 		if (Significance == 0.0f)
 		{
-
+			//Do what you need for Significane 0
 			Character->GetCharacterMovement()->SetComponentTickInterval(0.25f);
-			//Character->GetMesh()->SetMaterial(0,Significance0Material);
-			DynamicMaterial->SetVectorParameterValue("Color", FLinearColor::Red);
-			//Character->GetParticleSystem()->DeactivateSystem();
+			Character->DynamicMaterial->SetVectorParameterValue("Color", FLinearColor::Red);
 
 		}
 		else if (Significance == 1.0f)
 		{
+			//Do what you need for Significane 1
 			Character->GetCharacterMovement()->SetComponentTickInterval(0.1f);
-			//Character->GetMesh()->SetMaterial(0,Significance1Material);
-			//Character->GetParticleSystem()->DeactivateSystem();
-			//if (Character->GetParticleSystem()->IsActive()) Character->GetParticleSystem()->DeactivateSystem();
-			DynamicMaterial->SetVectorParameterValue("Color", FLinearColor::Yellow);
+			Character->DynamicMaterial->SetVectorParameterValue("Color", FLinearColor::Yellow);
 		}
 		else if (Significance == 2.0f)
 		{
+			//Do what you need for Significane 2
 			Character->GetCharacterMovement()->SetComponentTickInterval(0.0f);
-			//Character->GetMesh()->SetMaterial(0,Significance2Material);
-			//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::Printf(TEXT("HighestSignificance")) + Character->GetName() );
-			//if(!Character->GetParticleSystem()->IsActive()) Character->GetParticleSystem()->ActivateSystem();
-			DynamicMaterial->SetVectorParameterValue("Color", FLinearColor::Green);
+			Character->DynamicMaterial->SetVectorParameterValue("Color", FLinearColor::Green);
 
-
-			
 		}
 	}
 }
-
-//float ACollisionTestingCharacter::GetSignificanceByDistance(float distance)
-//{
-//	const int32 NumThresholds = SignificanceSettings.SignificanceThresholds.Num();
-//	if (distance >= SignificanceSettings.SignificanceThresholds[NumThresholds - 1].MaxDistance)
-//	{
-//		return SignificanceSettings.SignificanceThresholds[NumThresholds - 1].Significance;
-//	}
-//	else
-//	{
-//		for (int32 i = 0; i < NumThresholds; i++)
-//		{
-//			FSignificanceSettings::FSignificanceThresholds& Thresholds = SignificanceSettings.SignificanceThresholds[i];
-//			if (distance <= Thresholds.MaxDistance)
-//			{
-//				return Thresholds.Significance;
-//			}
-//		}
-//	}
-//
-//	return 0.0f;
-//}
 
 float ACollisionTestingCharacter::SignificanceFunction(USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& ViewPoint)
 {
@@ -276,68 +210,3 @@ float ACollisionTestingCharacter::SignificanceFunction(USignificanceManager::FMa
 
 	return 0.0f;
 }
-
-
-//
-////Significance Manager Functions
-//float ACollisionTestingCharacter::SignificanceFunction(USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& ViewPoint)
-//{
-//	if (ObjectInfo->GetTag() == TEXT("Character"))
-//	{
-//		ACollisionTestingCharacter* Character = CastChecked<ACollisionTestingCharacter>(ObjectInfo->GetObject());
-//
-//		const float Distance = (Character->GetActorLocation() - ViewPoint.GetLocation()).Size();
-//
-//		return GetSignificanceByDistance(Distance);
-//
-//	}
-//
-//	return 0.0f;
-//}
-//
-//void ACollisionTestingCharacter::PostSignificanceFunction(USignificanceManager::FManagedObjectInfo* ObjectInfo, float OldSignificance, float Significance, bool bFinal)
-//{
-//
-//
-//	if (ObjectInfo->GetTag() == TEXT("Character"))
-//	{
-//		ACollisionTestingCharacter* Character = CastChecked<ACollisionTestingCharacter>(ObjectInfo->GetObject());
-//
-//		if (Significance == 0.0f)
-//		{
-//			
-//			Character->GetCharacterMovement()->SetComponentTickInterval(0.25f);
-//
-//		}
-//		else if(Significance == 1.0f)
-//		{
-//			Character->GetCharacterMovement()->SetComponentTickInterval(0.1f);
-//		}
-//		else if (Significance == 2.0f)
-//		{
-//			Character->GetCharacterMovement()->SetComponentTickInterval(0.0f);
-//		}
-//	}
-//}
-//
-//float ACollisionTestingCharacter::GetSignificanceByDistance(float distance)
-//{
-//	const int32 NumThresholds = SignificanceSettings.SignificanceThresholds.Num();
-//	if (distance >= SignificanceSettings.SignificanceThresholds[NumThresholds - 1].MaxDistance)
-//	{
-//		return SignificanceSettings.SignificanceThresholds[NumThresholds - 1].Significance;
-//	}
-//	else
-//	{
-//		for (int32 i = 0; i < NumThresholds; i++)
-//		{
-//			FSignificanceSettings::FSignificanceThresholds& Thresholds = SignificanceSettings.SignificanceThresholds[i];
-//			if (distance <= Thresholds.MaxDistance)
-//			{
-//				return Thresholds.Significance;
-//			}
-//		}
-//	}
-//
-//	return 0.0f;
-//}
