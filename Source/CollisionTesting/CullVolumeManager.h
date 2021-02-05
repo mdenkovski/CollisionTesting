@@ -22,7 +22,7 @@ public:
 	ACullVolumeManager();
 
 	UPROPERTY(EditAnywhere)
-	TArray<ACullDistanceVolume*> cullVolumes;
+	ACullDistanceVolume* cullVolume;
 
 	UPROPERTY(EditAnywhere)
 		float cullChangeFactor = 2.0f;
@@ -38,14 +38,11 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void LowerCullDistances();
-	void LowerCullDistances_Implementation();
 
 	UFUNCTION(BlueprintCallable)
 		void RaiseCullDistances();
-	void RaiseCullDistances_Implementation();
 
 	UFUNCTION(BlueprintCallable)
 		void SetCullDistances(float newDistance);
-	void SetCullDistances_Implementation(float newDistance);
 
 };
