@@ -11,7 +11,6 @@ AMeshActor::AMeshActor()
 
 	Root = CreateDefaultSubobject<USceneComponent>("Root");
 	RootComponent = Root;
-	//Root->SetMobility(EComponentMobility::Stationary);
 
 	staticMesh = CreateDefaultSubobject<UStaticMeshComponent>("MeshComponent");
 	staticMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -26,13 +25,11 @@ AMeshActor::AMeshActor()
 	sphereCollision->AttachTo(Root);
 	sphereCollision->ComponentTags.Add("CustomCollisionMesh");
 	sphereCollision->SetMobility(EComponentMobility::Static);
-	/*
-	sphereCollision->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
-	sphereCollision->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn,ECollisionResponse::ECR_Block);*/
+	
 
 	RootComponent->SetMobility(EComponentMobility::Static);
 
-	Tags.Add("TestTag");
+	//Tags.Add("TestTag");
 }
 
 // Called when the game starts or when spawned
@@ -52,8 +49,6 @@ void AMeshActor::Tick(float DeltaTime)
 void AMeshActor::DisableCollision()
 {
 	staticMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	//staticMesh->SetVisibility(false);
-	//Destroy();
 }
 
 void AMeshActor::EnableCollision()
@@ -61,7 +56,8 @@ void AMeshActor::EnableCollision()
 	staticMesh->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 }
 
-void AMeshActor::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void AMeshActor::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, 
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (OtherActor->ActorHasTag("Player"))
 	{
@@ -70,7 +66,8 @@ void AMeshActor::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 	}
 }
 
-void AMeshActor::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+void AMeshActor::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, 
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	if (OtherActor->ActorHasTag("Player"))
 	{
